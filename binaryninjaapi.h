@@ -6057,6 +6057,7 @@ __attribute__ ((format (printf, 1, 2)))
 		static Ref<LinearViewObject> CreateMappedMediumLevelILSSAForm(BinaryView* view, DisassemblySettings* settings);
 		static Ref<LinearViewObject> CreateHighLevelIL(BinaryView* view, DisassemblySettings* settings);
 		static Ref<LinearViewObject> CreateHighLevelILSSAForm(BinaryView* view, DisassemblySettings* settings);
+		static Ref<LinearViewObject> CreateHighLevelILAsC(BinaryView* view, DisassemblySettings* settings);
 	};
 
 	class LinearViewCursor: public CoreRefCountObject<BNLinearViewCursor,

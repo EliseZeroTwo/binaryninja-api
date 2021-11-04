@@ -586,7 +586,8 @@ extern "C"
 		MappedMediumLevelILFunctionGraph = 6,
 		MappedMediumLevelILSSAFormFunctionGraph = 7,
 		HighLevelILFunctionGraph = 8,
-		HighLevelILSSAFormFunctionGraph = 9
+		HighLevelILSSAFormFunctionGraph = 9,
+		HighLevelILAsCFunctionGraph = 10
 	};
 
 	enum BNDisassemblyOption
@@ -3794,6 +3795,8 @@ __attribute__ ((format (printf, 1, 2)))
 		BNDisassemblySettings* settings);
 	BINARYNINJACOREAPI BNLinearViewObject* BNCreateLinearViewHighLevelILSSAForm(BNBinaryView* view,
 		BNDisassemblySettings* settings);
+	BINARYNINJACOREAPI BNLinearViewObject* BNCreateLinearViewHighLevelILAsC(BNBinaryView* view,
+        BNDisassemblySettings* settings);
 	BINARYNINJACOREAPI BNLinearViewObject* BNNewLinearViewObjectReference(BNLinearViewObject* obj);
 	BINARYNINJACOREAPI void BNFreeLinearViewObject(BNLinearViewObject* obj);
 	BINARYNINJACOREAPI BNLinearViewObject* BNGetFirstLinearViewObjectChild(BNLinearViewObject* obj);
