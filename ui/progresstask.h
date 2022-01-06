@@ -75,6 +75,10 @@ Q_SIGNALS:
 		ProgressTask* task = new ProgressTask("Long Operation", "Long Operation", "Cancel",
 			[](std::function<bool(size_t, size_t)> progress) {
 				doLongOperationWithProgress(progress);
+
+				// Report progress by calling the progress function
+				if (!progress(current, maximum))
+					return; // If the progress function returns false, then the user has cancelled the operation
 			});
 		// Throws if doLongOperationWithProgress threw
 		task->wait();
@@ -92,15 +96,25 @@ class BINARYNINJAUIAPI ProgressTask: public QObject
 	std::exception_ptr m_exception;
 
 public:
+	/*!
+	    Construct a new progress task, which automatically starts running a given function
+	    \param parent Parent QWidget to display progress dialog on top of
+	    \param name Title for progress dialog
+	    \param text Text for progress dialog
+	    \param cancel Cancel button title. If empty, the cancel button will not be shown
+	    \param func Function to run in the background, which takes a progress reporting function for its argument.
+	                The function should call the progress function periodically to signal updates and check for cancellation.
+	 */
 	ProgressTask(QWidget* parent, const QString& name, const QString& text, const QString& cancel,
 		std::function<void(std::function<bool(size_t, size_t)>)> func);
 	virtual ~ProgressTask();
 
 	/*!
-		Wait for the task to finish
-		\throws exception Any exception that the provided func throws
+	    Wait for the task to finish
+	    \throws exception Any exception that the provided func throws
+	    \returns False if canceled, true otherwise
 	 */
-	void wait();
+	bool wait();
 
 	/*!
 	    Hide the task to present a modal (in a function) since the progress dialog will block other parts of
@@ -133,7 +147,16 @@ public Q_SLOTS:
 	void cancel();
 
 Q_SIGNALS:
-	void progress(int, int);
+	/*!
+	    Signal reported every time there is a progress update (probably often)
+	    \param cur Current progress value
+	    \param max Maximum progress value
+	 */
+	void progress(int cur, int max);
+
+	/*!
+	    Signal reported when the task has finished
+	 */
 	void finished();
 };
 
